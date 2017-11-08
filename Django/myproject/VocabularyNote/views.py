@@ -4,7 +4,6 @@ from datetime import datetime
 from django.shortcuts import render
 from BSAClass import BSA
 import os
-import SQLconnect
 
 ###### show view ######
 
@@ -18,54 +17,10 @@ def BSA_sample(request):
     responds = {}
     return render(request,template,responds )
 
-def catch_from_SQL(request):
-    SQLconnect.connectDB()
-    SQLconnect.status()
-    Data = SQLconnect.exeSQl("SELECT * FROM `main`")
-    SQLconnect.close()
-    SQLconnect.status()
-    template = 'showData.html'
-    responds = {"Data":Data}
-
-
-    #SQLconnect.db.closed()
-    return render(request,template,responds )
-
-def BehaviorList(request,stu_id):
-    SQLconnect.connectDB()
-    Data = SQLconnect.exeSQl("SELECT * FROM `main`")
-    SQLconnect.close()
-    NewData=[]
-    for sqe in Data:
-        if stu_id in sqe:
-            NewData.append(sqe)
-    template = 'showData.html'
-    responds = {"Data":NewData}
-    return render(request,template,responds )
-
-def BehaviorAllList(request):#
-    SQLconnect.connectDB()
-    SQLconnect.status()
-    Data = SQLconnect.exeSQl("SELECT DISTINCT `Stu_Id` FROM `main`")
-    UserList = Data
-    Data = SQLconnect.exeSQl("SELECT * FROM `main`")
-    SQLconnect.close()
-    SQLconnect.status()
-    
-    NewData=[]
-    for u in UserList:
-        NewSqe=[]
-        u = ''.join(u)         
-        NewSqe.append(u) 
-        for sqe in Data:       
-            if u in sqe[2]:               
-                NewSqe.append(sqe[1])
-        NewData.append(NewSqe)
-    template = 'showData.html'
-    responds = {"Data":NewData}
-
-
-
+def BSA_in_SQL(request):
+    os.system("python /home/gavin/Desktop/wulab/Django/myproject/BSA/catch.py")
+    template = 'exportExample.csv'
+    responds = {}
     return render(request,template,responds )
 def Cal_BSA(request):
     try:

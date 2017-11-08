@@ -107,10 +107,7 @@ def DBfilter_Dropbreak(data):
     for record in data:
         row = []
         for col in record:
-            str(col).replace("\n", "")
-            str(col).replace("\t", "")
-            str(col).replace("\r", "")
-            row.append(col)
+            row.append(str(col).strip('\f\n\r\t\v'))
         reData.append(row)
     return reData
 
@@ -203,9 +200,20 @@ def compare(var1, var2):
         return -1 # var1 < var2
 
 MainList=[]
+idx = 2
 for i in sorted(correct_list, reverse=True, cmp=compare):
-    MainList.append(i)
+    NewArray=[]
+    NewArray.append(str(idx))    
+    i[2] = str(i[2]).strip('\f\n\r\t\v')
+    NewArray = NewArray+ i 
+    idx+=1
+    MainList.append(NewArray)
 #ShowDBList(MainList)
+
+for i in MainList:
+    for content in range(len(i)):
+        i[content] = i[content].replace(',','.')
+        i[content] = i[content].replace(',','.')
 
 print 'update csv'
 

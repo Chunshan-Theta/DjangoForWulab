@@ -19,12 +19,16 @@ from APP1.views import hello_world
 from APP1.views import YoutubeDownload
 from BSA.views import Cal_BSA
 from BSA.views import BSA_sample
-from BSA.views import BSA_in_SQL
+from BSA.views import catch_from_SQL
+from BSA.views import BehaviorList
+from BSA.views import BehaviorAllList
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^YoutubeDownload/(?P<Url>\S*)/$', YoutubeDownload),
     url(r'^YoutubeDownload/$', YoutubeDownload),
     url(r'^BSA/', Cal_BSA),
-    url(r'^BSA_Sample', BSA_sample),
-    url(r'^BSA_SQL', BSA_in_SQL),
+    url(r'^BSA_Sample/', BSA_sample),
+    url(r'^BSA_SQLData/', catch_from_SQL),
+    url(r'^BSA_BList/(?P<stu_id>\S*)/$', BehaviorList),
+    url(r'^BSA_BList/$', BehaviorAllList),
 ]

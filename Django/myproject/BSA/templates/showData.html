@@ -1,0 +1,31 @@
+<!-- hello_world.html -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Show Data page</title>
+        <style>
+            body {
+               background-color: lightyellow;
+            }
+            em {
+                color: LightSeaGreen;
+            }
+        </style>
+    </head>
+    <body>
+        
+        
+    
+        
+        
+        {% for link in Data %}
+            <li>
+            {% for con in link %}
+            {{ con }}
+            {% endfor %}
+            </li>-----------------------
+        {% endfor %}
+    </body>
+    
+</html>
