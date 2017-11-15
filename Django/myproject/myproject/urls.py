@@ -22,13 +22,16 @@ from BSA.views import BSA_sample
 from BSA.views import catch_from_SQL
 from BSA.views import BehaviorList
 from BSA.views import BehaviorAllList
+from BSA.views import Catch_BSA
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^YoutubeDownload/(?P<Url>\S*)/$', YoutubeDownload),
     url(r'^YoutubeDownload/$', YoutubeDownload),
-    url(r'^BSA/', Cal_BSA),
+    url(r'^BSA/$', Cal_BSA),
     url(r'^BSA_Sample/', BSA_sample),
     url(r'^BSA_SQLData/', catch_from_SQL),
     url(r'^BSA_BList/(?P<stu_id>\S*)/$', BehaviorList),
     url(r'^BSA_BList/$', BehaviorAllList),
+    url(r'^BSA_BArray/$', Catch_BSA),
+    url(r'^BSA_BArray/(?P<num>\S*)/(?P<group>\S*)/$', Catch_BSA),
 ]

@@ -96,7 +96,8 @@ class BSA:
                 if row[2] != '':
                     listmotion.append([str(row[0]),int(row[2])])# Group , type
             except:
-                print "warring: Input data:\'"+str(row[2])+'\' not Int'
+                print "warning: Input data:\'"+str(row)+'\' is warning'
+                print "warning: Input data:\'"+str(row[2])+'\' not Int'
 
         return listmotion
 
@@ -125,7 +126,18 @@ class BSA:
 
     def ReNumOfMotionSet(self,Fir,Sec):
         return self.SelectedArray[Fir,Sec]
-
+    
+    def Re_MotionArray(self):
+        '''output:
+            [[1,1 1383],[1,2 157],[1,3 81],[1,4 334],[2,1 178],[2,2 657],[2,3 114],[2,4 511],[3,1 76],[3,2 118],[3,3 280],[3,4 208],[4,1 317],[4,2 528],[4,3 208],[4,4 742]
+        '''
+        reArray=[]
+        for i in range(1,self.TypeNum+1):
+            for p in range(1,self.TypeNum+1):
+                label = str(i)+","+str(p)+" "
+                Num = int(self.SelectedArray[i,p])
+                reArray.append([label,Num])
+        return reArray
 
 
 '''

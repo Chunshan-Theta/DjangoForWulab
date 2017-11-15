@@ -5,7 +5,7 @@ from django.shortcuts import render
 from BSAClass import BSA
 import os
 import SQLconnect
-
+import DB2csv
 ###### show view ######
 
 def hello_world(request):
@@ -46,8 +46,7 @@ def BehaviorList(request,stu_id):
 def BehaviorAllList(request):#
     SQLconnect.connectDB()
     SQLconnect.status()
-    Data = SQLconnect.exeSQl("SELECT DISTINCT `Stu_Id` FROM `main`")
-    UserList = Data
+    UserList = SQLconnect.exeSQl("SELECT DISTINCT `Stu_Id` FROM `main`")    
     Data = SQLconnect.exeSQl("SELECT * FROM `main`")
     SQLconnect.close()
     SQLconnect.status()
@@ -65,8 +64,34 @@ def BehaviorAllList(request):#
     responds = {"Data":NewData}
 
 
+    return render(request,template,responds )
+def Catch_BSA(request,num='4',group='-1'):
+    SQLconnect.connectDB()
+    Data = SQLconnect.exeSQl("SELECT * FROM `main`")
+    TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
+    SQLconnect.close()  
+
+    NumOfBS    = int(num)
+    Group      = str(group)
+    print NumOfBS,Group
+    input_text = DB2csv.re_csv(Data,TypeList)
+    content    = "\n".join(input_text.splitlines())
+        
+    
+    if Group != str(-1):
+        print Group
+        TheBSA = BSA(content,NumOfBS)
+        TheBSA.ComputeMotionGroup(int(Group))
+        content = TheBSA.Re_MotionArray
+    else:
+        content = BSA(content,NumOfBS).Re_MotionArray()
+    
+    #content=[["hello"]]    
+    template = 'showData.html'
+    responds = {"Data":content}
 
     return render(request,template,responds )
+
 def Cal_BSA(request):
     try:
         input_text = request.POST['content']#linebreaks
