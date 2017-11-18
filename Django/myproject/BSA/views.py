@@ -65,6 +65,7 @@ def BehaviorAllList(request):#
 
 
     return render(request,template,responds )
+'''
 def Catch_BSA(request,num='4',group='-1'):
     SQLconnect.connectDB()
     Data = SQLconnect.exeSQl("SELECT * FROM `main`")
@@ -79,19 +80,45 @@ def Catch_BSA(request,num='4',group='-1'):
         
     
     if Group != str(-1):
-        print Group
+        #print Group
         TheBSA = BSA(content,NumOfBS)
         TheBSA.ComputeMotionGroup(int(Group))
-        content = TheBSA.Re_MotionArray
+        content = TheBSA.Re_MotionArray_Label()
     else:
-        content = BSA(content,NumOfBS).Re_MotionArray()
+        content = BSA(content,NumOfBS).Re_MotionArray_Label()
     
     #content=[["hello"]]    
     template = 'showData.html'
     responds = {"Data":content}
 
     return render(request,template,responds )
+'''
+def Catch_From_DB_to_BSA(request,num='4',group='-1'):
+    SQLconnect.connectDB()
+    Data = SQLconnect.exeSQl("SELECT * FROM `main`")
+    TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
+    SQLconnect.close()  
 
+    NumOfBS    = int(num)
+    Group      = str(group)
+    print NumOfBS,Group
+    input_text = DB2csv.re_csv(Data,TypeList)
+    content    = "\n".join(input_text.splitlines())
+        
+    
+    if Group != str(-1):
+        #print Group
+        TheBSA = BSA(content,NumOfBS)
+        TheBSA.ComputeMotionGroup(str(Group))
+        content = TheBSA.Re_MotionArray_Label()
+    else:
+        content = BSA(content,NumOfBS).Re_MotionArray_Label()
+    
+    #content=[["hello"]]    
+    template = 'showData.html'
+    responds = {"Data":content}
+
+    return render(request,template,responds )
 def Cal_BSA(request):
     try:
         input_text = request.POST['content']#linebreaks
@@ -128,6 +155,37 @@ def Cal_BSA(request):
                 }
     return render(request,template,responds )
 
+
+def API_BSA_Json(request,num='4',group='-1',source="DB"):
+
+    content =""
+    if source=="DB":
+        SQLconnect.connectDB()
+        Data = SQLconnect.exeSQl("SELECT * FROM `main`")
+        TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
+        SQLconnect.close()      
+        input_text = DB2csv.re_csv(Data,TypeList)
+        content    = "\n".join(input_text.splitlines())
+    elif source == "input":
+        pass
+    else:
+        return "error 0.1: Unknow Source"
+    NumOfBS    = int(num)
+    Group      = str(group)
+    
+    if Group != str(-1):
+        #print Group
+        TheBSA = BSA(content,NumOfBS)
+        TheBSA.ComputeMotionGroup(int(Group))
+        content = TheBSA.Re_MotionArray_Json()
+    else:
+        content = BSA(content,NumOfBS).Re_MotionArray_Json()
+    
+    #content=[["hello"]]    
+    template = 'showString.html'
+    responds = {"Data":content}
+
+    return render(request,template,responds )
 
 
 ###### show view END######

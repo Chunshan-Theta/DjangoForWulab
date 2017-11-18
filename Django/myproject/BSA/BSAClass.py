@@ -13,16 +13,23 @@ print FirstBSA.SelectedArray
 
 import csv
 import numpy
-
 class BSA:
-    def __init__(self,CsvSource,TypeNum):
-        try:
-            self.listmotion = self.ReadFile(CsvSource)
-        except:
-            self.listmotion = self.ReadCSV(CsvSource.encode("utf-8"))
+    def __init__(self,CsvSource,TypeNum,SourceType="csv"):
         self.SelectedArray = [[]]        
         self.TypeNum = TypeNum
-        self.ComputeMotionALL()
+
+        if SourceType == "csv":
+            try:
+                self.listmotion = self.ReadFile(CsvSource)
+            except:
+                self.listmotion = self.ReadCSV(CsvSource.encode("utf-8"))
+            self.ComputeMotionALL()
+        elif SourceType == "json":
+            pass
+        else:
+            return "error 0.2: Unsupported input type"
+        
+          
         ####
 
 
@@ -59,7 +66,7 @@ class BSA:
         MotionSet=numpy.zeros((TypeNum,TypeNum),int)
         ####
         
-        for index in range(TypeNum-1):
+        for index in range(TypeNum-1): # Set Title of Raw
             MotionSet[0][index+1]=index+1
             MotionSet[index+1][0]=index+1
         
@@ -114,6 +121,9 @@ class BSA:
             print self.SelectedArray
 
         elif Actiontype == 2: # list of count
+            '''
+                1,1 99 \n 1,2 99 \n 1,3 99 \n 1,4 99 \n 1,5 99 \n 1,6 99 \n .....
+            '''
             PrintStr = ""
             for i in range(1,self.TypeNum+1):
                 for p in range(1,self.TypeNum+1):
@@ -127,8 +137,10 @@ class BSA:
     def ReNumOfMotionSet(self,Fir,Sec):
         return self.SelectedArray[Fir,Sec]
     
-    def Re_MotionArray(self):
-        '''output:
+    def Re_MotionArray_Label(self):
+        '''
+        brief: return result of Behavior Sequential Analysis that with label string 
+        output:
             [[1,1 1383],[1,2 157],[1,3 81],[1,4 334],[2,1 178],[2,2 657],[2,3 114],[2,4 511],[3,1 76],[3,2 118],[3,3 280],[3,4 208],[4,1 317],[4,2 528],[4,3 208],[4,4 742]
         '''
         reArray=[]
@@ -139,6 +151,43 @@ class BSA:
                 reArray.append([label,Num])
         return reArray
 
+    def Re_MotionArray_Json(self):
+        '''
+        brief:return result of Behavior Sequential Analysis with Json 
+
+        output:
+            {["1":"1383","1,2":"183".......],["1":"1383","1,2":"183".......],[...],...,[...]}
+        '''
+        
+        return self.Np2JsonString(self.SelectedArray,self.TypeNum,self.TypeNum)
+
+
+    def Np2JsonString(self,np,x,y):
+        '''
+        brief:Convert Numpy Array to Json (only x*y array) 
+        input:
+             np : NumpyArray(x*y)
+             x  : Width of np
+             y  : height of np
+        output:
+            {["1":"1383","1,2":"183".......],["1":"1383","1,2":"183".......],[...],...,[...]}
+        '''
+        reJsonString="{"
+        for i in range(1,x+1):
+            reJsonString += "["
+            for p in range(1,y+1):
+                reJsonString += "\""+str(p)+"\":"                
+                if p != int(self.TypeNum):
+                    reJsonString += "\""+str(np[i,p])+"\","
+                else:# For End process
+                    reJsonString += "\""+str(np[i,p])+"\""
+            if i != int(self.TypeNum):
+                reJsonString += "],"
+            else:# For End process
+                reJsonString += "]"
+        reJsonString = reJsonString + "}"
+        return reJsonString
+        
 
 '''
 ##using
