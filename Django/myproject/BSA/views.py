@@ -156,40 +156,68 @@ def Cal_BSA(request):
     return render(request,template,responds )
 
 
-def API_BSA_Json(request,num='4',group='-1',source="DB"):
-
+def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB"):
+    #####
+    # source Defined
     content =""
     if source=="DB":
-        SQLconnect.connectDB()
-        Data = SQLconnect.exeSQl("SELECT * FROM `main`")
-        TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
-        SQLconnect.close()      
-        input_text = DB2csv.re_csv(Data,TypeList)
-        content    = "\n".join(input_text.splitlines())
-    elif source == "input":
+        try:
+            SQLconnect.connectDB()
+            Data = SQLconnect.exeSQl("SELECT * FROM `main`")
+            TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
+            SQLconnect.close()      
+            input_text = DB2csv.re_csv(Data,TypeList)
+            content    = "\n".join(input_text.splitlines())
+        except:
+            return "error 0.3: couldn't connect to DB"
+    elif source == "inputCsv":
         pass
+    elif source == "inputJson":
+        pass
+        
     else:
         return "error 0.1: Unknow Source"
-    NumOfBS    = int(num)
-    Group      = str(group)
-    
-    if Group != str(-1):
-        #print Group
-        TheBSA = BSA(content,NumOfBS)
-        TheBSA.ComputeMotionGroup(int(Group))
-        content = TheBSA.Re_MotionArray_Json()
+
+    #####
+    # Data compute
+    if str(ApiType) == "BArray":
+        content = ReBArrayOfApi(content,num,group)
+    elif str(ApiType)=="Zscore":
+        content = ReZscoreOfApi(content,num,group)
     else:
-        content = BSA(content,NumOfBS).Re_MotionArray_Json()
-    
-    #content=[["hello"]]    
+        return "error 2.1: Unknow API Enterance"
+
     template = 'showString.html'
     responds = {"Data":content}
-
     return render(request,template,responds )
 
 
 ###### show view END######
 
+def ReBArrayOfApi(content,num='4',group='-1'):
+    
+    JsonString="initial"
+    NumOfBS    = int(num)
+    Group      = str(group)
 
+    TheBSA = BSA(content,NumOfBS)
+    if Group != str(-1):       
+        TheBSA.ComputeMotionGroup(int(Group))
+    JsonString = TheBSA.Re_MotionArray_Json()
+    return JsonString
+
+    
+def ReZscoreOfApi(content,num='4',group='-1'):
+    
+    JsonString="initial"
+    NumOfBS    = int(num)
+    Group      = str(group)
+
+    TheBSA = BSA(content,NumOfBS)
+    if Group != str(-1):       
+        TheBSA.ComputeMotionGroup(int(Group))
+    JsonString = TheBSA.Re_ZscoreArray_Json()
+    
+    return JsonString
 
 

@@ -20,12 +20,16 @@ class BSA:
 
         if SourceType == "csv":
             try:
-                self.listmotion = self.ReadFile(CsvSource)
+	            #self.listmotion = self.ReadFile(CsvSource)
+	            self.listmotion = self.ReadCSV(CsvSource.encode("utf-8"))
+	            self.ComputeMotionALL()
             except:
-                self.listmotion = self.ReadCSV(CsvSource.encode("utf-8"))
-            self.ComputeMotionALL()
+                return "error 1.1: Invalid CSV input value"
         elif SourceType == "json":
-            pass
+            try:
+	            pass
+            except:
+                return "error 1.2: Invalid Json input value"
         else:
             return "error 0.2: Unsupported input type"
         
@@ -75,8 +79,8 @@ class BSA:
                 SecondMotion = listmotion[index+1][1]
                 MotionSet[FirstMotion][SecondMotion] += 1
         self.SelectedArray = MotionSet
-
-    def ReadFile(self,FileDir):
+    '''
+    def ReadFile(self,FileDir):# Read From dir
         listmotion = []
         Tfile = open(FileDir, 'r')
         csvCursor = csv.reader(Tfile)
@@ -90,7 +94,7 @@ class BSA:
                 print "warring: Input data:\'"+str(row[2])+'\' not Int'
         Tfile.close()
         return listmotion
-
+   '''
 
     def ReadCSV(self,CSV_TEXT):
         listmotion = []
@@ -133,15 +137,16 @@ class BSA:
             return PrintStr
         else:
             print "Not found the action type"
-
+    '''
     def ReNumOfMotionSet(self,Fir,Sec):
         return self.SelectedArray[Fir,Sec]
-    
+    '''
     def Re_MotionArray_Label(self):
         '''
         brief: return result of Behavior Sequential Analysis that with label string 
         output:
-            [[1,1 1383],[1,2 157],[1,3 81],[1,4 334],[2,1 178],[2,2 657],[2,3 114],[2,4 511],[3,1 76],[3,2 118],[3,3 280],[3,4 208],[4,1 317],[4,2 528],[4,3 208],[4,4 742]
+            [[1,1 1383],[1,2 157],[1,3 81],[1,4 334],[2,1 178],[2,2 657],[2,3 114],[2,4 511],[3,1 76],[3,2 118],[3,3  
+        280],[3,4 208],[4,1 317],[4,2 528],[4,3 208],[4,4 742]
         '''
         reArray=[]
         for i in range(1,self.TypeNum+1):
@@ -161,6 +166,40 @@ class BSA:
         
         return self.Np2JsonString(self.SelectedArray,self.TypeNum,self.TypeNum)
 
+    def Re_ZscoreArray_Json(self):
+        '''
+        brief:return Zscore Array of Behavior Sequential Analysis with Json 
+
+        output:
+
+        '''
+        
+        x_IJ=self.SelectedArray
+        ZscoreArray =numpy.zeros((self.TypeNum+1,self.TypeNum+1),float)
+        I=1
+        for I in range(1,self.TypeNum+1):
+            for J in range(1,self.TypeNum+1):
+                x_IPlus=0
+                x_PlusJ=0
+                x_PlusPlus=0
+                for idx in range(1,self.TypeNum+1):
+                    x_IPlus +=x_IJ[I,idx]
+                    x_PlusJ +=x_IJ[idx,J]
+                    x_PlusPlus +=x_IJ[idx,idx]
+                
+                m_IJ=float(x_IPlus*x_PlusJ)/float(x_PlusPlus)
+                
+                p_IPlus=float(x_IPlus)/float(x_PlusPlus)
+                p_PlusJ=float(x_PlusJ)/float(x_PlusPlus)
+
+                z_IJ=round(float(x_IJ[I,J]-m_IJ)/m_IJ*(1-p_IPlus)*(1-p_PlusJ)**0.5,3)
+                ZscoreArray[I,J] = z_IJ
+                print z_IJ,ZscoreArray[I,J]
+        
+
+         
+        
+        return self.Np2JsonString(ZscoreArray,self.TypeNum,self.TypeNum)
 
     def Np2JsonString(self,np,x,y):
         '''
