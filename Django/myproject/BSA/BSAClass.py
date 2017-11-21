@@ -13,25 +13,16 @@ print FirstBSA.SelectedArray
 
 import csv
 import numpy
+from SourceForBSAclass import B_source
 class BSA:
     def __init__(self,CsvSource,TypeNum,SourceType="csv"):
         self.SelectedArray = [[]]        
         self.TypeNum = TypeNum
 
-        if SourceType == "csv":
-            try:
-	            #self.listmotion = self.ReadFile(CsvSource)
-	            self.listmotion = self.ReadCSV(CsvSource.encode("utf-8"))
-	            self.ComputeMotionALL()
-            except:
-                return "error 1.1: Invalid CSV input value"
-        elif SourceType == "json":
-            try:
-	            pass
-            except:
-                return "error 1.2: Invalid Json input value"
-        else:
-            return "error 0.2: Unsupported input type"
+        SourceArray = B_source(CsvSource.encode("utf-8"),SourceType)
+        self.listmotion = SourceArray.Re_list
+        self.ComputeMotionALL()
+        
         
           
         ####
@@ -176,16 +167,20 @@ class BSA:
         
         x_IJ=self.SelectedArray
         ZscoreArray =numpy.zeros((self.TypeNum+1,self.TypeNum+1),float)
-        I=1
+        
+        x_PlusPlus=0
+        for I in range(1,self.TypeNum+1):
+            for J in range(1,self.TypeNum+1):
+                x_PlusPlus += x_IJ[I,J]
+
         for I in range(1,self.TypeNum+1):
             for J in range(1,self.TypeNum+1):
                 x_IPlus=0
                 x_PlusJ=0
-                x_PlusPlus=0
                 for idx in range(1,self.TypeNum+1):
                     x_IPlus +=x_IJ[I,idx]
                     x_PlusJ +=x_IJ[idx,J]
-                    x_PlusPlus +=x_IJ[idx,idx]
+                                   
                 
                 m_IJ=float(x_IPlus*x_PlusJ)/float(x_PlusPlus)
                 
@@ -194,7 +189,7 @@ class BSA:
 
                 z_IJ=round(float(x_IJ[I,J]-m_IJ)/m_IJ*(1-p_IPlus)*(1-p_PlusJ)**0.5,3)
                 ZscoreArray[I,J] = z_IJ
-                print z_IJ,ZscoreArray[I,J]
+                
         
 
          
