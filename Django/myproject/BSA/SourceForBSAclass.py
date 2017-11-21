@@ -19,16 +19,11 @@ class B_source:
         self.FileType = str(FType)
         self.Re_list = []
         if self.FileType == "csv":
-            try:
-                self.Re_list = self.ReadCSV(self.content)
-            except:
-                return "error 1.1: Invalid CSV input value"
+            self.Re_list = self.ReadCSV(self.content)
         elif self.FileType == "json":
-            try:
-                self.Re_list = self.ReadCSV(self.content)
-            except:
-                return "error 1.1: Invalid CSV input value"
+            pass
         else:
+            print "error 0.2: Unsupported input type"
             return "error 0.2: Unsupported input type"
         ####
 
@@ -36,25 +31,23 @@ class B_source:
    
 
     def ReadCSV(self,CSV_TEXT):
-        listmotion = []
-        CSV_TEXT = CSV_TEXT.split('\n')
-        csvCursor = csv.reader(CSV_TEXT)
-        ####
-        for row in csvCursor:
-            
-            try:
-                if row[2] != '':
-                    listmotion.append([str(row[0]),int(row[2])])# Group , type
-            except:
-                print "warning: Input data:\'"+str(row)+'\' is warning'
-                print "warning: Input data:\'"+str(row[2])+'\' not Int'
+        try:
+            listmotion = []
+            CSV_TEXT = CSV_TEXT.split('\n')
+            csvCursor = csv.reader(CSV_TEXT)
+            ####
+            for row in csvCursor:
+                
+                try:
+                    if row[2] != '':
+                        listmotion.append([str(row[0]),int(row[2])])# Group , type
+                except:
+                    print "warning: Input data:\'"+str(row)+'\' is warning'
+                    print "warning: Input data:\'"+str(row[2])+'\' not Int'
 
-        return listmotion
+            return listmotion
+        except:
+            return "error 1.1: Invalid CSV input value"
 
-    
-
-         
-        
-        return self.Np2JsonString(ZscoreArray,self.TypeNum,self.TypeNum)
 
 

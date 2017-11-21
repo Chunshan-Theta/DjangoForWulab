@@ -169,7 +169,9 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB"):
             input_text = DB2csv.re_csv(Data,TypeList)
             content    = "\n".join(input_text.splitlines())
         except:
-            return "error 0.3: couldn't connect to DB"
+            template = 'showString.html'
+            responds = {"Data":"error 0.3: couldn't connect to DB"}
+            return render(request,template,responds )
     elif source == "inputCsv":
         pass
     elif source == "inputJson":
@@ -184,8 +186,10 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB"):
         content = ReBArrayOfApi(content,num,group)
     elif str(ApiType)=="Zscore":
         content = ReZscoreOfApi(content,num,group)
-    else:
-        return "error 2.1: Unknow API Enterance"
+    else: 
+        template = 'showString.html'
+        responds = {"Data":"error 2.1: Unknow API Enterance"}
+        return render(request,template,responds )
 
     template = 'showString.html'
     responds = {"Data":content}
