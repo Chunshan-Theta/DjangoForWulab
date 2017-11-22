@@ -37,4 +37,5 @@ urlpatterns = [
     url(r'^BSA_BArray/(?P<num>\S*)/(?P<group>\S*)/$', Catch_From_DB_to_BSA),
     url(r'^BSA_API_Json/(?P<ApiType>\S*)/(?P<num>\S*)/(?P<group>\S*)/$', API_BSA_Json),
     url(r'^BSA_API_Json/(?P<num>\S*)/(?P<group>\S*)/$', API_BSA_Json),
+    url(r'^BSA_API_Json/$', API_BSA_Json),
 ]

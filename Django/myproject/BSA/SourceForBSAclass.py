@@ -35,7 +35,7 @@ class B_source:
 
     def ReadCSV(self,CSV_TEXT):
         listmotion = []
-        CSV_TEXT = CSV_TEXT.split('\n')
+        CSV_TEXT = CSV_TEXT.split(' ')
         csvCursor = csv.reader(CSV_TEXT)
         ####
         for row in csvCursor:            

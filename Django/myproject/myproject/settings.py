@@ -31,14 +31,10 @@ SECRET_KEY = SECRETS['secret_key']
 #DEBUG = os.environ.get('DEBUG') == 'True'
 # if close DEBUG mode, Django would not process static file
 # if you want to process static file without DEBUG mode, you should run 'manage.py runserver --insecure' 
-DEBUG = 0
+DEBUG = 1
 from socket import gethostname
 ALLOWED_HOSTS = [
-    gethostname(), # For internal OpenShift load balancer security purposes.
-    os.environ.get('OPENSHIFT_APP_DNS'), # Dynamically map to the OpenShift gear name.
-    #'example.com', # First DNS alias (set up in the app)
-    #'www.example.com', # Second DNS alias (set up in the app)
-    '127.0.0.1','140.115.126.20','hellotheta.tk'             
+    '127.0.0.1','140.115.126.20','hellotheta.tk','140.115.126.216'             
 ]
 
 
@@ -51,6 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'APP1',
     'BSA',
 )

@@ -3,6 +3,9 @@ from __future__ import unicode_literals
 from datetime import datetime
 from django.shortcuts import render
 from BSAClass import BSA
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 import os
 import SQLconnect
 import DB2csv
@@ -92,6 +95,7 @@ def Catch_From_DB_to_BSA(request,num='4',group='-1'):
     responds = {"Data":content}
 
     return render(request,template,responds )
+
 def Cal_BSA(request):
     try:
         input_text = request.POST['content']#linebreaks
@@ -128,8 +132,13 @@ def Cal_BSA(request):
                 }
     return render(request,template,responds )
 
-
-def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB"):
+@csrf_exempt #csrf skip
+def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB",con='none'):
+    num = str(request.POST['num'])#linebreaks
+    group = str(request.POST['group'])
+    ApiType = str(request.POST['ApiType'])
+    source = str(request.POST['source'])
+    con = str(request.POST['con'])
     #####
     # source Defined
     content =""
@@ -140,7 +149,7 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB"):
             TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
             SQLconnect.close()      
             input_text = DB2csv.re_csv(Data,TypeList)
-            source = "csv"
+            source_type = "csv"
             content    = "\n".join(input_text.splitlines())
         except:
             template = 'showBUG.html'
@@ -149,7 +158,9 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB"):
     elif source[:5] == "input":#input-csv
         if source[6:] == "csv":
             try:
-                pass
+                content = con
+                print con
+                source_type = "csv"
             except:
                 template = 'showBUG.html'
                 responds = {"Data":"error 2.1: Invalid CSV input value"}
@@ -173,21 +184,30 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB"):
     #####
     # Data compute
     if str(ApiType) == "BArray":
-        content = ReBArrayOfApi(content,num,group,source)
+        content = ReBArrayOfApi(content,num,group,source_type)
     elif str(ApiType)=="Zscore":
-        content = ReZscoreOfApi(content,num,group,source)
+        content = ReZscoreOfApi(content,num,group,source_type)
     else: 
         template = 'showBUG.html'
         responds = {"Data":"error 3.1: Unknow API Enterance"}
         return render(request,template,responds )
 
         
-
+    
+    '''
     template = 'showString.html'
     responds = {"Data":content}
     return render(request,template,responds )
-
-
+    '''
+    from django.http import HttpResponse
+    return HttpResponse(content)#context_instance = RequestContext(request)
+'''
+@csrf_exempt #csrf skip
+def apitest(request):
+    input_text = request.POST['c']#linebreaks
+    from django.http import JsonResponse
+    return JsonResponse({'foo':input_text})#context_instance = RequestContext(request)
+'''
 ###### show view END######
 
 def ReBArrayOfApi(content,num,group,ContentType):
