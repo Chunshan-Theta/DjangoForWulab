@@ -5,6 +5,7 @@ from django.shortcuts import render
 from BSAClass import BSA
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 import os
 import SQLconnect
@@ -134,11 +135,14 @@ def Cal_BSA(request):
 
 @csrf_exempt #csrf skip
 def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB",con='none'):
-    num = str(request.POST['num'])#linebreaks
-    group = str(request.POST['group'])
-    ApiType = str(request.POST['ApiType'])
-    source = str(request.POST['source'])
-    con = str(request.POST['con'])
+    try:
+        num = str(request.POST['num'])#linebreaks
+        group = str(request.POST['group'])
+        ApiType = str(request.POST['ApiType'])
+        source = str(request.POST['source'])
+        con = str(request.POST['con'])
+    except Exception as e:
+            return HttpResponse("error 0: Not catch post\n"+str(e))
     #####
     # source Defined
     content =""
@@ -151,35 +155,25 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB",con='no
             input_text = DB2csv.re_csv(Data,TypeList)
             source_type = "csv"
             content    = "\n".join(input_text.splitlines())
-        except:
-            template = 'showBUG.html'
-            responds = {"Data":"error 1.3: couldn't connect to DB"}
-            return render(request,template,responds )
+        except Exception as e:
+            return HttpResponse("error 1.3: couldn't connect to DB\n"+str(e))
     elif source[:5] == "input":#input-csv
         if source[6:] == "csv":
-            try:
-                content = con
-                print con
-                source_type = "csv"
-            except:
-                template = 'showBUG.html'
-                responds = {"Data":"error 2.1: Invalid CSV input value"}
-                return render(request,template,responds )
+            content = con
+            source_type = "csv"            
+            try:                
+                TheBSA = BSA(content,int(num),source_type)
+            except Exception as e:
+                return HttpResponse("error 2.1: Invalid CSV input value\n"+str(e))
         elif source[6:] == "json":
             try:
                 pass
-            except:
-                template = 'showBUG.html'
-                responds = {"Data":"error 2.2:Invalid JSON input value"}
-                return render(request,template,responds )
+            except Exception as e:
+                return HttpResponse("error 2.2:Invalid JSON input value\n"+str(e))
         else:
-            template = 'showBUG.html'
-            responds = {"Data":"error 1.2:Unsupported input type"}
-            return render(request,template,responds)
+            return HttpResponse("error 1.2:Unsupported input type")
     else:
-        template = 'showBUG.html'
-        responds = {"Data":"error 0: Unknow Source"}
-        return render(request,template,responds )
+        return HttpResponse("error 1.1: Unknow Source")
 
     #####
     # Data compute
@@ -188,37 +182,22 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB",con='no
     elif str(ApiType)=="Zscore":
         content = ReZscoreOfApi(content,num,group,source_type)
     else: 
-        template = 'showBUG.html'
-        responds = {"Data":"error 3.1: Unknow API Enterance"}
-        return render(request,template,responds )
+        return HttpResponse("error 3.1: Unknow API Enterance")
 
-        
-    
-    '''
-    template = 'showString.html'
-    responds = {"Data":content}
-    return render(request,template,responds )
-    '''
-    from django.http import HttpResponse
+ 
+
     return HttpResponse(content)#context_instance = RequestContext(request)
-'''
-@csrf_exempt #csrf skip
-def apitest(request):
-    input_text = request.POST['c']#linebreaks
-    from django.http import JsonResponse
-    return JsonResponse({'foo':input_text})#context_instance = RequestContext(request)
-'''
+
 ###### show view END######
 
 def ReBArrayOfApi(content,num,group,ContentType):
-    
     JsonString="initial"
     NumOfBS    = int(num)
     Group      = str(group)
 
     TheBSA = BSA(content,NumOfBS,ContentType)
     if Group != str(-1):       
-        TheBSA.ComputeMotionGroup(int(Group))
+	TheBSA.ComputeMotionGroup(int(Group))
     JsonString = TheBSA.Re_MotionArray_Json()
     return JsonString
 
