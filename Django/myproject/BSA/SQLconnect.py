@@ -26,13 +26,10 @@ def status():
         print '-- DB status: connection is closed'
 
 def connectDB(Thost="localhost",Tuser="root", Tpasswd="root", Tdb="BSA",Tcharset='utf8'):
-    try:
-        print "-- DB commend: connent to DB "+str(Thost)
-        global db,cursor
-        db = MySQLdb.connect(host=Thost,user=Tuser, passwd=Tpasswd, db=Tdb,charset=Tcharset)
-        cursor = db.cursor()
-    except:
-        return "error 0.3: couldn't connect to DB"
+    print "-- DB commend: connent to DB "+str(Thost)
+    global db,cursor
+    db = MySQLdb.connect(host=Thost,user=Tuser, passwd=Tpasswd, db=Tdb,charset=Tcharset)
+    cursor = db.cursor()
 
 def close():
     print "-- DB commend: close connection to DB"

@@ -65,34 +65,7 @@ def BehaviorAllList(request):#
 
 
     return render(request,template,responds )
-'''
-def Catch_BSA(request,num='4',group='-1'):
-    SQLconnect.connectDB()
-    Data = SQLconnect.exeSQl("SELECT * FROM `main`")
-    TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
-    SQLconnect.close()  
 
-    NumOfBS    = int(num)
-    Group      = str(group)
-    print NumOfBS,Group
-    input_text = DB2csv.re_csv(Data,TypeList)
-    content    = "\n".join(input_text.splitlines())
-        
-    
-    if Group != str(-1):
-        #print Group
-        TheBSA = BSA(content,NumOfBS)
-        TheBSA.ComputeMotionGroup(int(Group))
-        content = TheBSA.Re_MotionArray_Label()
-    else:
-        content = BSA(content,NumOfBS).Re_MotionArray_Label()
-    
-    #content=[["hello"]]    
-    template = 'showData.html'
-    responds = {"Data":content}
-
-    return render(request,template,responds )
-'''
 def Catch_From_DB_to_BSA(request,num='4',group='-1'):
     SQLconnect.connectDB()
     Data = SQLconnect.exeSQl("SELECT * FROM `main`")
@@ -167,29 +140,48 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB"):
             TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
             SQLconnect.close()      
             input_text = DB2csv.re_csv(Data,TypeList)
+            source = "csv"
             content    = "\n".join(input_text.splitlines())
         except:
-            template = 'showString.html'
-            responds = {"Data":"error 0.3: couldn't connect to DB"}
+            template = 'showBUG.html'
+            responds = {"Data":"error 1.3: couldn't connect to DB"}
             return render(request,template,responds )
-    elif source == "inputCsv":
-        pass
-    elif source == "inputJson":
-        pass
-        
+    elif source[:5] == "input":#input-csv
+        if source[6:] == "csv":
+            try:
+                pass
+            except:
+                template = 'showBUG.html'
+                responds = {"Data":"error 2.1: Invalid CSV input value"}
+                return render(request,template,responds )
+        elif source[6:] == "json":
+            try:
+                pass
+            except:
+                template = 'showBUG.html'
+                responds = {"Data":"error 2.2:Invalid JSON input value"}
+                return render(request,template,responds )
+        else:
+            template = 'showBUG.html'
+            responds = {"Data":"error 1.2:Unsupported input type"}
+            return render(request,template,responds)
     else:
-        return "error 0.1: Unknow Source"
+        template = 'showBUG.html'
+        responds = {"Data":"error 0: Unknow Source"}
+        return render(request,template,responds )
 
     #####
     # Data compute
     if str(ApiType) == "BArray":
-        content = ReBArrayOfApi(content,num,group)
+        content = ReBArrayOfApi(content,num,group,source)
     elif str(ApiType)=="Zscore":
-        content = ReZscoreOfApi(content,num,group)
+        content = ReZscoreOfApi(content,num,group,source)
     else: 
-        template = 'showString.html'
-        responds = {"Data":"error 2.1: Unknow API Enterance"}
+        template = 'showBUG.html'
+        responds = {"Data":"error 3.1: Unknow API Enterance"}
         return render(request,template,responds )
+
+        
 
     template = 'showString.html'
     responds = {"Data":content}
@@ -198,30 +190,31 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB"):
 
 ###### show view END######
 
-def ReBArrayOfApi(content,num='4',group='-1'):
+def ReBArrayOfApi(content,num,group,ContentType):
     
     JsonString="initial"
     NumOfBS    = int(num)
     Group      = str(group)
 
-    TheBSA = BSA(content,NumOfBS)
+    TheBSA = BSA(content,NumOfBS,ContentType)
     if Group != str(-1):       
         TheBSA.ComputeMotionGroup(int(Group))
     JsonString = TheBSA.Re_MotionArray_Json()
     return JsonString
 
     
-def ReZscoreOfApi(content,num='4',group='-1'):
+def ReZscoreOfApi(content,num,group,ContentType):
     
     JsonString="initial"
     NumOfBS    = int(num)
     Group      = str(group)
 
-    TheBSA = BSA(content,NumOfBS)
+    TheBSA = BSA(content,NumOfBS,ContentType)
     if Group != str(-1):       
         TheBSA.ComputeMotionGroup(int(Group))
     JsonString = TheBSA.Re_ZscoreArray_Json()
     
     return JsonString
+
 
 

@@ -70,38 +70,9 @@ class BSA:
                 SecondMotion = listmotion[index+1][1]
                 MotionSet[FirstMotion][SecondMotion] += 1
         self.SelectedArray = MotionSet
-    '''
-    def ReadFile(self,FileDir):# Read From dir
-        listmotion = []
-        Tfile = open(FileDir, 'r')
-        csvCursor = csv.reader(Tfile)
-        ####
+    
 
-        for row in csvCursor:
-            try:
-                if row[2] != '':
-                    listmotion.append([str(row[0]),int(row[2])])# Group , type
-            except:
-                print "warring: Input data:\'"+str(row[2])+'\' not Int'
-        Tfile.close()
-        return listmotion
-   '''
-
-    def ReadCSV(self,CSV_TEXT):
-        listmotion = []
-        CSV_TEXT = CSV_TEXT.split('\n')
-        csvCursor = csv.reader(CSV_TEXT)
-        ####
-        for row in csvCursor:
-            
-            try:
-                if row[2] != '':
-                    listmotion.append([str(row[0]),int(row[2])])# Group , type
-            except:
-                print "warning: Input data:\'"+str(row)+'\' is warning'
-                print "warning: Input data:\'"+str(row[2])+'\' not Int'
-
-        return listmotion
+   
 
     def show(self,Actiontype=0):
         if Actiontype ==1: #without title
@@ -128,10 +99,7 @@ class BSA:
             return PrintStr
         else:
             print "Not found the action type"
-    '''
-    def ReNumOfMotionSet(self,Fir,Sec):
-        return self.SelectedArray[Fir,Sec]
-    '''
+   
     def Re_MotionArray_Label(self):
         '''
         brief: return result of Behavior Sequential Analysis that with label string 
