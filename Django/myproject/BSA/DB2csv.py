@@ -12,5 +12,6 @@ def re_csv(Data,TypeList):
 			    IType = int(t[0])
 		input_text+=str(i[5])+','+str(i[2])+','+str(IType)+','+str(i[3])+','+str(i[4])+'\n'
         print "DB2csv : complete to convert Data to csv text"
+        #print input_text
 	return input_text
     

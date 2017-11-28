@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        {% load staticfiles %}
+        <script type="text/javascript" src="{% static 'js/jq.js' %}"></script>
         <title>行為序列分析</title>
         <style>
             body {
@@ -12,6 +14,27 @@
                 color: LightSeaGreen;
             }
         </style>
+        <script>
+        $(document).ready(function(){
+	        $("#enter").click(function(){
+                document.getElementById("enter").disabled = true;
+                $.post("http://hellotheta.tk:8000/BSA_API_Json/",
+                {
+                    num:$("#NumOfBS").val(),
+                    group:$("#Group").val(),
+                    ApiType:$("#API_Select").val(),
+                    source:"input-csv",
+                    con:$("#content").val(),
+
+                },
+                function(data,status){
+                    $("#array_BSA").html(data);
+                    alert(status);
+                    document.getElementById("enter").disabled = false;
+                });
+                
+            });
+	    });</script>
     </head>
     <body>
         <!--
@@ -25,14 +48,13 @@
         <a href="../BSA_BArray">看行為序列矩陣</a> |
         <a href="../BSA_Sample" download="sample.csv">Download Sample</a>
         <br>
-        <form action="#" method="post">{% csrf_token %}
-            <textarea rows="10" cols="100" name="content">{{ csv_data }}</textarea>
-            行為種類數量為：<input type="text" name="NumOfBS" value="{{ NumOfBS }}"></input>
-            指定組別(-1為不指定)：<input type="text" name="Group" value="{{ Group }}"></input>
-          <input type="submit" value="計算行為序列"></input>
-        </form>
         
-        <textarea rows="10" cols="100" >{{ array_BSA }}</textarea>
+        <textarea rows="10" cols="100" id="content" name="content">{{ csv_data }}</textarea>
+        行為種類數量為：<input type="text" id="NumOfBS" name="NumOfBS" value="{{ NumOfBS }}"></input>
+        指定組別(-1為不指定)：<input type="text" id="Group" name="Group" value="{{ Group }}"></input>
+        ＡＰＩ選擇：<input type="text" id="API_Select" name="API_Select" value="BArray"></input>
+        <input id='enter' type="button" value="計算行為序列"></input>
+        <textarea id="array_BSA" rows="10" cols="100" >{{ array_BSA }}</textarea>
         
     </body>
 </html>

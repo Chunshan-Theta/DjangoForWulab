@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 from django.shortcuts import render
 from BSAClass import BSA
+from BSAClass import BTest
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -98,31 +99,11 @@ def Catch_From_DB_to_BSA(request,num='4',group='-1'):
     return render(request,template,responds )
 
 def Cal_BSA(request):
-    try:
-        input_text = request.POST['content']#linebreaks
-        NumOfBS = int(request.POST['NumOfBS'])
-        Group = int(request.POST['Group'])
-        content = "\n".join(input_text.splitlines())
-        #print content
-    except Exception as e:
-        print e
-        print "error!! Can NOT catch POST['content']"
-        content = "empty"
-        input_text = "empty"
-        NumOfBS = 6
-        Group= -1
-    if content != "empty":
-        try:
-            if Group != -1:
-                print Group
-                TheBSA = BSA(content,NumOfBS)
-                TheBSA.ComputeMotionGroup(int(Group))
-                content = TheBSA.show(2)
-            else:
-                content = BSA(content,NumOfBS).show(2)
-        except Exception as e:
-            print "Error when convert to BSA ",e
-
+    
+    content = "empty"
+    input_text = "empty"
+    NumOfBS = 6
+    Group= -1
     
     template = 'CalBSA.html'
     responds = {'current_time': str(datetime.now()),
@@ -160,9 +141,9 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB",con='no
     elif source[:5] == "input":#input-csv
         if source[6:] == "csv":
             content = con
-            source_type = "csv"            
+            source_type = "csv"
             try:                
-                TheBSA = BSA(content,int(num),source_type)
+                TheBSA = BTest(content,int(num),source_type)
             except Exception as e:
                 return HttpResponse("error 2.1: Invalid CSV input value\n"+str(e))
         elif source[6:] == "json":
@@ -179,7 +160,7 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB",con='no
     # Data compute
     if str(ApiType) == "BArray":
         content = ReBArrayOfApi(content,num,group,source_type)
-    elif str(ApiType)=="Zscore":
+    elif str(ApiType)=="ZScore":
         content = ReZscoreOfApi(content,num,group,source_type)
     else: 
         return HttpResponse("error 3.1: Unknow API Enterance")
@@ -197,7 +178,7 @@ def ReBArrayOfApi(content,num,group,ContentType):
 
     TheBSA = BSA(content,NumOfBS,ContentType)
     if Group != str(-1):       
-	TheBSA.ComputeMotionGroup(int(Group))
+	    TheBSA.ComputeMotionGroup(int(Group))
     JsonString = TheBSA.Re_MotionArray_Json()
     return JsonString
 

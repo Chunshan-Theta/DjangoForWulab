@@ -14,6 +14,8 @@ print FirstBSA.SelectedArray
 import csv
 import numpy
 from SourceForBSAclass import B_source
+from SourceForBSAclass import BTest_source
+
 class BSA:
     def __init__(self,CsvSource,TypeNum,SourceType="csv"):
         self.SelectedArray = [[]]        
@@ -189,8 +191,54 @@ class BSA:
                 reJsonString += "]"
         reJsonString = reJsonString + "}"
         return reJsonString
-        
 
+
+
+
+class BTest: #For Test that Source Data is correct or not
+    def __init__(self,CsvSource,TypeNum,SourceType="csv"):
+        self.SelectedArray = [[]]        
+        self.TypeNum = TypeNum
+        self.testnum = 200
+        SourceArray = BTest_source(CsvSource.encode("utf-8"),SourceType)
+        self.listmotion = SourceArray.Re_list
+        self.ComputeMotionALL()
+        
+        
+          
+        ####
+
+
+    
+
+    def ComputeMotionALL(self):
+        FirstMotion = -1
+        SecondMotion = -1
+        TypeNum = self.TypeNum    
+        listmotion = self.listmotion
+        TypeNum +=1 # Because Data not contain 0
+        MotionSet=numpy.zeros((TypeNum,TypeNum),int)
+        ####
+        
+        for index in range(TypeNum-1): # Set Title of Raw
+            MotionSet[0][index+1]=index+1
+            MotionSet[index+1][0]=index+1
+        if len(listmotion) <= 200:
+            for index in range(len(listmotion)-1):
+                FirstMotion = listmotion[index][1]
+                SecondMotion = listmotion[index+1][1]
+                MotionSet[FirstMotion][SecondMotion] += 1
+        else:
+            for index in range(1,200):
+                FirstMotion = listmotion[index][1]
+                SecondMotion = listmotion[index+1][1]
+                MotionSet[FirstMotion][SecondMotion] += 1
+        self.SelectedArray = MotionSet
+    
+
+   
+
+    
 '''
 ##using
 FirstBSA = BSA('組別,ID,group_argu_code,論證內容,time\n4,s10008,1,唯有穩健減核，才能兼顧能源安全、經濟發展與民眾福祉，進而打造綠能低碳環境，逐步邁向非核家園。,4/14/2016 14:11\n4,s10008,1,核能發電對於經濟發展與國計民生，扮演舉足輕重的角色。,4/14/2016 14:12\n4,s10007,1,核廢料的汙染尚無法解決，若是發生問題會發生無法挽救的汙染。,4/14/2016 14:13',6)
