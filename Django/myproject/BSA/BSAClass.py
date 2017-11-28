@@ -176,9 +176,9 @@ class BSA:
         output:
             {["1":"1383","1,2":"183".......],["1":"1383","1,2":"183".......],[...],...,[...]}
         '''
-        reJsonString="{"
+        reJsonString="["
         for i in range(1,x+1):
-            reJsonString += "["
+            reJsonString += "{"
             for p in range(1,y+1):
                 reJsonString += "\""+str(p)+"\":"                
                 if p != int(self.TypeNum):
@@ -186,10 +186,10 @@ class BSA:
                 else:# For End process
                     reJsonString += "\""+str(np[i,p])+"\""
             if i != int(self.TypeNum):
-                reJsonString += "],"
+                reJsonString += "},"
             else:# For End process
-                reJsonString += "]"
-        reJsonString = reJsonString + "}"
+                reJsonString += "}"
+        reJsonString = reJsonString + "]"
         return reJsonString
 
 

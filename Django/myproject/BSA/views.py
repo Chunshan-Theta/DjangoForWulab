@@ -99,9 +99,37 @@ def Catch_From_DB_to_BSA(request,num='4',group='-1'):
     return render(request,template,responds )
 
 def draw_ZScore(request):
+    import json
+    import numpy
+    try:
+        JsonString = str(request.POST['JsonString'])
+        holder = numpy.zeros(37,int)
+        jdata = json.loads(JsonString)
+    except Exception as e:
+        #print 'using default json',
+        #JsonString = '[{"1":"0.583","2":"-0.399","3":"-0.383","4":"-0.257"},{"1":"-0.405","2":"0.54","3":"-0.176","4":"0.154"},{"1":"-0.457","2":"-0.163","3":"1.692","4":"0.027"},{"1":"-0.28","2":"0.17","3":"0.026","4":"0.198"}]'
+        #holder = numpy.zeros(37,int)
+        #jdata = json.loads(JsonString)
+        return HttpResponse("error : Invalid Json input value :  "+str(e))
     
+    #print jdata[0]['1']
+    for i in range(len(jdata)):
+        for j in jdata[i]:
+            if float(jdata[i][j])>1.96:
+                holder[(i*6+int(j))] = 1
+            else:
+                holder[(i*6+int(j))] = 0
+    #print holder
     template = 'drawZScore.html'
-    responds = {}
+    responds = {
+        '1_1': holder[1],'1_2': holder[2],'1_3': holder[3],'1_4': holder[4],'1_5': holder[5],'1_6': holder[6],
+        '2_1': holder[7],'2_2': holder[8],'2_3': holder[9],'2_4': holder[10],'2_5': holder[11],'2_6': holder[12],
+        '3_1': holder[13],'3_2': holder[14],'3_3': holder[15],'3_4': holder[16],'3_5': holder[17],'3_6': holder[18],
+        '4_1': holder[19],'4_2': holder[20],'4_3': holder[21],'4_4': holder[22],'4_5': holder[23],'4_6': holder[24],
+        '5_1': holder[25],'5_2': holder[26],'5_3': holder[27],'5_4': holder[28],'5_5': holder[29],'5_6': holder[30],
+        '6_1': holder[31],'6_2': holder[32],'6_3': holder[33],'6_4': holder[34],'6_5': holder[35],'6_6': holder[36],
+        
+    }
     return render(request,template,responds )
 
 def Cal_BSA(request):
@@ -169,7 +197,7 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB",con='no
     elif str(ApiType)=="ZScore":
         content = ReZscoreOfApi(content,num,group,source_type)
     else: 
-        return HttpResponse("error 3.1: Unknow API Enterance")
+        return HttpResponse("error 3.1: Unknow API Enterance : "+str(ApiType))
 
  
 

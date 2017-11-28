@@ -31,7 +31,7 @@ SECRET_KEY = SECRETS['secret_key']
 #DEBUG = os.environ.get('DEBUG') == 'True'
 # if close DEBUG mode, Django would not process static file
 # if you want to process static file without DEBUG mode, you should run 'manage.py runserver --insecure' 
-DEBUG = 0
+DEBUG = 1
 from socket import gethostname
 ALLOWED_HOSTS = [
     '127.0.0.1','140.115.126.20','hellotheta.tk','140.115.126.216'             
