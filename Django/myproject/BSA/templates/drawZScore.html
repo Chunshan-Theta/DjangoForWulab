@@ -1,0 +1,102 @@
+<!-- hello_world.html -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        
+    </head>
+    <body>
+        
+        <canvas id="myCanvas" width="700" height="700" style="border:1px solid #d3d3d3;background-color: #FFFFFF;">
+            If you can see the string,show your browser does not support the HTML5 canvas tag.
+        </canvas>
+
+        <script>
+
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+
+            //正方形1
+            var initialpoint_x =20;
+            var initialpoint_y =20;
+            ctx.beginPath();     
+            ctx.moveTo(initialpoint_x, initialpoint_y);               // Create a starting point
+            ctx.lineTo(initialpoint_x+80, initialpoint_y);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x+80, initialpoint_y+80);         // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y+80);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y);               // Create a horizontal line
+            ctx.stroke();
+            ctx.font = "50px Georgia";
+            ctx.strokeText("1", initialpoint_x+30, initialpoint_y+55);
+
+            //正方形2
+            initialpoint_x =220;
+            initialpoint_y =20;
+            ctx.beginPath();     
+            ctx.moveTo(initialpoint_x, initialpoint_y);               // Create a starting point
+            ctx.lineTo(initialpoint_x+80, initialpoint_y);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x+80, initialpoint_y+80);         // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y+80);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y);               // Create a horizontal line
+            ctx.stroke();
+            ctx.font = "50px Georgia";
+            ctx.strokeText("2", initialpoint_x+30, initialpoint_y+55);
+
+            //正方形3
+            initialpoint_x =420;
+            initialpoint_y =20;
+            ctx.beginPath();     
+            ctx.moveTo(initialpoint_x, initialpoint_y);               // Create a starting point
+            ctx.lineTo(initialpoint_x+80, initialpoint_y);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x+80, initialpoint_y+80);         // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y+80);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y);               // Create a horizontal line
+            ctx.stroke();
+            ctx.font = "50px Georgia";
+            ctx.strokeText("3", initialpoint_x+30, initialpoint_y+50);
+
+            //正方形4
+            initialpoint_x =20;
+            initialpoint_y =220;
+            ctx.beginPath();     
+            ctx.moveTo(initialpoint_x, initialpoint_y);               // Create a starting point
+            ctx.lineTo(initialpoint_x+80, initialpoint_y);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x+80, initialpoint_y+80);         // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y+80);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y);               // Create a horizontal line
+            ctx.stroke();
+            ctx.font = "50px Georgia";
+            ctx.strokeText("4", initialpoint_x+25, initialpoint_y+50);
+
+            //正方形5
+            initialpoint_x =220;
+            initialpoint_y =220;
+            ctx.beginPath();     
+            ctx.moveTo(initialpoint_x, initialpoint_y);               // Create a starting point
+            ctx.lineTo(initialpoint_x+80, initialpoint_y);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x+80, initialpoint_y+80);         // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y+80);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y);               // Create a horizontal line
+            ctx.stroke();
+            ctx.font = "50px Georgia";
+            ctx.strokeText("5", initialpoint_x+28, initialpoint_y+50);
+
+            //正方形6
+            initialpoint_x =420;
+            initialpoint_y =220;
+            ctx.beginPath();     
+            ctx.moveTo(initialpoint_x, initialpoint_y);               // Create a starting point
+            ctx.lineTo(initialpoint_x+80, initialpoint_y);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x+80, initialpoint_y+80);         // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y+80);            // Create a horizontal line
+            ctx.lineTo(initialpoint_x, initialpoint_y);               // Create a horizontal line
+            ctx.stroke();
+            ctx.font = "50px Georgia";
+            ctx.strokeText("6", initialpoint_x+28, initialpoint_y+58);
+            
+            
+
+
+        </script>
+    </body>
+</html>

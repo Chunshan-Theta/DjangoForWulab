@@ -98,6 +98,12 @@ def Catch_From_DB_to_BSA(request,num='4',group='-1'):
 
     return render(request,template,responds )
 
+def draw_ZScore(request):
+    
+    template = 'drawZScore.html'
+    responds = {}
+    return render(request,template,responds )
+
 def Cal_BSA(request):
     
     content = "empty"

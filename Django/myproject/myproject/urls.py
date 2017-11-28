@@ -24,6 +24,7 @@ from BSA.views import BehaviorList
 from BSA.views import BehaviorAllList
 from BSA.views import Catch_From_DB_to_BSA
 from BSA.views import API_BSA_Json
+from BSA.views import draw_ZScore
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^YoutubeDownload/(?P<Url>\S*)/$', YoutubeDownload),
@@ -38,4 +39,5 @@ urlpatterns = [
     url(r'^BSA_API_Json/(?P<ApiType>\S*)/(?P<num>\S*)/(?P<group>\S*)/$', API_BSA_Json),
     url(r'^BSA_API_Json/(?P<num>\S*)/(?P<group>\S*)/$', API_BSA_Json),
     url(r'^BSA_API_Json/$', API_BSA_Json),
+    url(r'^BSA/draw/$',draw_ZScore)
 ]
