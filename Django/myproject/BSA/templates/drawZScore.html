@@ -5,12 +5,85 @@
     <head>
         
     </head>
+    <style type="text/css">
+    	th{
+    		width: 95px;
+    		height: 35px;
+    	  }
+    </style>
     <body>
+    	<h1>{{ title }}</h1>
         
-        <canvas id="myCanvas" width="800" height="800" style="border:1px solid #d3d3d3;background-color: #FFFFFF;">
+        <canvas id="myCanvas" width="700" height="600" style="border:1px solid #d3d3d3;background-color: #FFFFFF;">
             If you can see the string,show your browser does not support the HTML5 canvas tag.
         </canvas>
-
+        <table border="1">
+          <tr>
+          	<th>\</th>
+		  	<th>1</th>
+		  	<th>2</th>
+		  	<th>3</th>
+		  	<th>4</th>
+		  	<th>5</th>
+		  	<th>6</th>
+		  </tr>
+		  <tr>
+		  	<th>1</th>
+		    <th>{{ t1_1 }}</th>
+		    <th>{{ t1_2 }}</th>
+		    <th>{{ t1_3 }}</th>
+		    <th>{{ t1_4 }}</th>
+		    <th>{{ t1_5 }}</th>
+		    <th>{{ t1_6 }}</th>
+		  </tr>
+		  <tr>
+		  	<th>2</th>
+		    <th>{{ t2_1 }}</th>
+		    <th>{{ t2_2 }}</th>
+		    <th>{{ t2_3 }}</th>
+		    <th>{{ t2_4 }}</th>
+		    <th>{{ t2_5 }}</th>
+		    <th>{{ t2_6 }}</th>
+		  </tr>
+		  <tr>
+		  	<th>3</th>
+		    <th>{{ t3_1 }}</th>
+		    <th>{{ t3_2 }}</th>
+		    <th>{{ t3_3 }}</th>
+		    <th>{{ t3_4 }}</th>
+		    <th>{{ t3_5 }}</th>
+		    <th>{{ t3_6 }}</th>
+		  </tr>
+		  <tr>
+		  	<th>4</th>
+		    <th>{{ t4_1 }}</th>
+		    <th>{{ t4_2 }}</th>
+		    <th>{{ t4_3 }}</th>
+		    <th>{{ t4_4 }}</th>
+		    <th>{{ t4_5 }}</th>
+		    <th>{{ t4_6 }}</th>
+		  </tr>
+		  <tr>
+		  	<th>5</th>
+		    <th>{{ t5_1 }}</th>
+		    <th>{{ t5_2 }}</th>
+		    <th>{{ t5_3 }}</th>
+		    <th>{{ t5_4 }}</th>
+		    <th>{{ t5_5 }}</th>
+		    <th>{{ t5_6 }}</th>
+		  </tr>
+		  <tr>
+		  	<th>6</th>
+		    <th>{{ t6_1 }}</th>
+		    <th>{{ t6_2 }}</th>
+		    <th>{{ t6_3 }}</th>
+		    <th>{{ t6_4 }}</th>
+		    <th>{{ t6_5 }}</th>
+		    <th>{{ t6_6 }}</th>
+		  </tr>
+		</table>
+        1: {{ t1 }}        2: {{ t2 }}        3: {{ t3 }}        4: {{ t4 }}        5: {{ t5 }}        6: {{ t6 }}
+        <!--   script   -->
         <script>
 
             var c = document.getElementById("myCanvas");

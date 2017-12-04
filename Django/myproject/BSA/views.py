@@ -74,13 +74,14 @@ def BehaviorAllList(request):#
 def Catch_From_DB_to_BSA(request,num='4',group='-1'):
     SQLconnect.connectDB()
     Data = SQLconnect.exeSQl("SELECT * FROM `main`")
-    TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
+    #TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
     SQLconnect.close()  
 
     NumOfBS    = int(num)
     Group      = str(group)
     print NumOfBS,Group
-    input_text = DB2csv.re_csv(Data,TypeList)
+    #input_text = DB2csv.re_csv(Data,TypeList)
+    input_text = DB2csv.re_csv(Data)
     content    = "\n".join(input_text.splitlines())
         
     
@@ -104,6 +105,7 @@ def draw_ZScore(request):
     try:
         JsonString = str(request.POST['JsonString'])
         holder = numpy.zeros(37,int)
+        holder_source = numpy.zeros(37,float)
         jdata = json.loads(JsonString)
     except Exception as e:
         #print 'using default json',
@@ -119,6 +121,7 @@ def draw_ZScore(request):
                 holder[(i*6+int(j))] = 1
             else:
                 holder[(i*6+int(j))] = 0
+            holder_source[(i*6+int(j))] = jdata[i][j]
     #print holder
     template = 'drawZScore.html'
     responds = {
@@ -128,6 +131,13 @@ def draw_ZScore(request):
         '4_1': holder[19],'4_2': holder[20],'4_3': holder[21],'4_4': holder[22],'4_5': holder[23],'4_6': holder[24],
         '5_1': holder[25],'5_2': holder[26],'5_3': holder[27],'5_4': holder[28],'5_5': holder[29],'5_6': holder[30],
         '6_1': holder[31],'6_2': holder[32],'6_3': holder[33],'6_4': holder[34],'6_5': holder[35],'6_6': holder[36],
+        't1_1': holder_source[1],'t1_2': holder_source[2],'t1_3': holder_source[3],'t1_4': holder_source[4],'t1_5': holder_source[5],'t1_6': holder_source[6],
+        't2_1': holder_source[7],'t2_2': holder_source[8],'t2_3': holder_source[9],'t2_4': holder_source[10],'t2_5': holder_source[11],'t2_6': holder_source[12],
+        't3_1': holder_source[13],'t3_2': holder_source[14],'t3_3': holder_source[15],'t3_4': holder_source[16],'t3_5': holder_source[17],'t3_6': holder_source[18],
+        't4_1': holder_source[19],'t4_2': holder_source[20],'t4_3': holder_source[21],'t4_4': holder_source[22],'t4_5': holder_source[23],'t4_6': holder_source[24],
+        't5_1': holder_source[25],'t5_2': holder_source[26],'t5_3': holder_source[27],'t5_4': holder_source[28],'t5_5': holder_source[29],'t5_6': holder_source[30],
+        't6_1': holder_source[31],'t6_2': holder_source[32],'t6_3': holder_source[33],'t6_4': holder_source[34],'t6_5': holder_source[35],'t6_6': holder_source[36],
+        't1':'Null','t2':'Null','t3':'Null','t4':'Null','t5':'Null','t6':'Null','title':"Title is here."
         
     }
     return render(request,template,responds )
@@ -195,7 +205,10 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB",con='no
     if str(ApiType) == "BArray":
         content = ReBArrayOfApi(content,num,group,source_type)
     elif str(ApiType)=="ZScore":
-        content = ReZscoreOfApi(content,num,group,source_type)
+        try:
+            content = ReZscoreOfApi(content,num,group,source_type)
+        except Exception as e:
+                return HttpResponse("error 4.1:Invalid value in setting\n"+str(e))
     else: 
         return HttpResponse("error 3.1: Unknow API Enterance : "+str(ApiType))
 

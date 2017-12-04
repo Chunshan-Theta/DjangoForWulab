@@ -1,6 +1,6 @@
 
 
-
+'''
 def re_csv(Data,TypeList):
         print "DB2csv : Start to convert Data to csv text"
 	input_text=''
@@ -14,4 +14,13 @@ def re_csv(Data,TypeList):
         print "DB2csv : complete to convert Data to csv text"
         #print input_text
 	return input_text
-    
+'''
+def re_csv(Data):
+        print "DB2csv : Start to convert Data to csv text"
+	input_text=''
+	for i in Data:
+		IType='99' 
+		input_text+=str(i[5])+','+str(i[2])+','+str(i[1])+','+str(i[3])+','+str(i[4])+'\n'
+        print "DB2csv : complete to convert Data to csv text"
+        #print input_text
+	return input_text

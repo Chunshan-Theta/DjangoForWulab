@@ -153,11 +153,12 @@ class BSA:
                                    
                 
                 m_IJ=float(x_IPlus*x_PlusJ)/float(x_PlusPlus)
-                
+                #print x_IPlus,x_PlusJ,x_PlusPlus
                 p_IPlus=float(x_IPlus)/float(x_PlusPlus)
                 p_PlusJ=float(x_PlusJ)/float(x_PlusPlus)
+                #print m_IJ,p_IPlus,p_PlusJ
+                z_IJ=round(float(x_IJ[I,J]-m_IJ)/float(m_IJ*(1-p_IPlus)*(1-p_PlusJ)**0.5),3)
 
-                z_IJ=round(float(x_IJ[I,J]-m_IJ)/m_IJ*(1-p_IPlus)*(1-p_PlusJ)**0.5,3)
                 ZscoreArray[I,J] = z_IJ
                 
         
