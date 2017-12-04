@@ -58,7 +58,14 @@
         <input id='enter' type="button" value="計算行為序列"></input>
         <form action="./draw/" method="post">{% csrf_token %}            
             <textarea id="array_BSA" name='JsonString' rows="10" cols="100" >{{ array_BSA }}</textarea><br>
-            <input type="submit" value="ZScore轉圖">
+            <input type="text" name="t1" value="1號行為"></input>
+            <input type="text" name="t2" value="2號行為"></input>
+            <input type="text" name="t3" value="3號行為"></input>
+            <input type="text" name="t4" value="4號行為"></input>
+            <input type="text" name="t5" value="5號行為"></input>
+            <input type="text" name="t6" value="6號行為"></input>
+            <br><input type="text" name="bigtitle" value="大標題"></input>
+            <br><input type="submit" value="ZScore轉圖">
         </form> 
     </body>
 </html>

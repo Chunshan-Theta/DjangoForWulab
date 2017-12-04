@@ -104,6 +104,13 @@ def draw_ZScore(request):
     import numpy
     try:
         JsonString = str(request.POST['JsonString'])
+        t1 = str(request.POST['t1'])
+        t2 = str(request.POST['t2'])
+        t3 = str(request.POST['t3'])
+        t4 = str(request.POST['t4'])
+        t5 = str(request.POST['t5'])
+        t6 = str(request.POST['t6'])
+        bigtitle = str(request.POST['bigtitle'])
         holder = numpy.zeros(37,int)
         holder_source = numpy.zeros(37,float)
         jdata = json.loads(JsonString)
@@ -137,7 +144,7 @@ def draw_ZScore(request):
         't4_1': holder_source[19],'t4_2': holder_source[20],'t4_3': holder_source[21],'t4_4': holder_source[22],'t4_5': holder_source[23],'t4_6': holder_source[24],
         't5_1': holder_source[25],'t5_2': holder_source[26],'t5_3': holder_source[27],'t5_4': holder_source[28],'t5_5': holder_source[29],'t5_6': holder_source[30],
         't6_1': holder_source[31],'t6_2': holder_source[32],'t6_3': holder_source[33],'t6_4': holder_source[34],'t6_5': holder_source[35],'t6_6': holder_source[36],
-        't1':'Null','t2':'Null','t3':'Null','t4':'Null','t5':'Null','t6':'Null','title':"Title is here."
+        't1':t1,'t2':t2,'t3':t3,'t4':t4,'t5':t5,'t6':t6,'title':bigtitle,
         
     }
     return render(request,template,responds )
