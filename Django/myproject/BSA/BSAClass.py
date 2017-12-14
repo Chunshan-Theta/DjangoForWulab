@@ -138,15 +138,15 @@ class BSA:
         x_IJ=self.SelectedArray
         ZscoreArray =numpy.zeros((self.TypeNum+1,self.TypeNum+1),float)
         
-        x_PlusPlus=0
+        x_PlusPlus=0.0
         for I in range(1,self.TypeNum+1):
             for J in range(1,self.TypeNum+1):
                 x_PlusPlus += x_IJ[I,J]
 
         for I in range(1,self.TypeNum+1):
             for J in range(1,self.TypeNum+1):
-                x_IPlus=0
-                x_PlusJ=0
+                x_IPlus=0.0
+                x_PlusJ=0.0
                 for idx in range(1,self.TypeNum+1):
                     x_IPlus +=x_IJ[I,idx]
                     x_PlusJ +=x_IJ[idx,J]
@@ -157,7 +157,7 @@ class BSA:
                 p_IPlus=float(x_IPlus)/float(x_PlusPlus)
                 p_PlusJ=float(x_PlusJ)/float(x_PlusPlus)
                 #print m_IJ,p_IPlus,p_PlusJ
-                z_IJ=round(float(x_IJ[I,J]-m_IJ)/float(m_IJ*(1-p_IPlus)*(1-p_PlusJ)**0.5),3)
+                z_IJ=round(float(x_IJ[I,J]-m_IJ)/float((m_IJ*(1-p_IPlus)*(1-p_PlusJ))**0.5),3)
 
                 ZscoreArray[I,J] = z_IJ
                 
