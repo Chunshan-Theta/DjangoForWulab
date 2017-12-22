@@ -182,9 +182,9 @@ def API_BSA_Json(request,num='4',group='-1',ApiType="BArray",source="DB",con='no
         try:
             SQLconnect.connectDB()
             Data = SQLconnect.exeSQl("SELECT * FROM `main`")
-            TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
+            #TypeList = SQLconnect.exeSQl("SELECT * FROM `TypeDoc`")
             SQLconnect.close()      
-            input_text = DB2csv.re_csv(Data,TypeList)
+            input_text = DB2csv.re_csv(Data)
             source_type = "csv"
             content    = "\n".join(input_text.splitlines())
         except Exception as e:
