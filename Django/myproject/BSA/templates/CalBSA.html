@@ -3,8 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        {% load staticfiles %}
-        <script type="text/javascript" src="{% static 'js/jq.js' %}"></script>
+        <script type="text/javascript" src="http://hellotheta.tk/static/js/jq.js"></script>
         <title>行為序列分析</title>
         <style>
             body {
@@ -18,7 +17,7 @@
         $(document).ready(function(){
 	        $("#enter").click(function(){
                 document.getElementById("enter").disabled = true;
-                $.post("http://hellotheta.tk:8000/BSA_API_Json/",
+                $.post("../BSA_API_Json/",
                 {
                     num:$("#NumOfBS").val(),
                     group:$("#Group").val(),

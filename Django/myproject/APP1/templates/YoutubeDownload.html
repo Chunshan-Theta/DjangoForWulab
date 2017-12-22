@@ -57,11 +57,8 @@
             //  https://youtu.be/V7iWGcyNcqo
             inputURL = inputURL.substring(inputURL.indexOf("youtu.be")+9,inputURL.indexOf("youtu.be")+20);
         }
-        var curWwwPath=window.document.location.href;
-        var pathName=window.document.location.pathname;
-        var pos=curWwwPath.indexOf(pathName);
-        var localhostPaht=curWwwPath.substring(0,pos);
-        location.href = localhostPaht+'/YoutubeDownload/'+inputURL;
+        var localhostPaht=window.document.location.href;
+        location.href = localhostPaht+inputURL;
        
     
     }

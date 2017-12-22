@@ -20,7 +20,7 @@ def GetDataPage(request,Get_1,Get_2):
     responds = {'Get_1': str(Get_1.encode('utf-8')),'Get_2': str(Get_2),}
     return render(request,template,responds)
 
-def YoutubeDownload(request,Url = 'znbKTbDGX1E'):
+def YoutubeDownload(request,Url = 't5EiR5txpJU'):
     Url_complete = 'https://www.youtube.com/watch?v='+str(Url.encode('utf-8'))
     template = 'YoutubeDownload.html'
     responds = {'SourceUrl': DYA(Url_complete),'current_time': str(datetime.now().strftime("%d/%m - %H%M%S")),'VideoID':Url}
